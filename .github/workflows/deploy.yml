@@ -1,20 +1,20 @@
-name: Manually Deploy to Heroku
+name: Build Docker
 
-on: workflow_dispatch
-
+on:
+  push:
+   branches: [ master ]
+  pull_request:
+    branches: [ master ]
+      
 jobs:
-  deploy:
+  build:
+
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
-      - uses: akhileshns/heroku-deploy@v3.12.12
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
-          heroku_email: ${{secrets.HEROKU_EMAIL}}
-          usedocker: true
-          docker_heroku_process_type: web
-          stack: "container"
-          region: "us"
-        env:
-          HD_CONFIG_FILE_URL: ${{secrets.CONFIG_FILE_URL}}
+    - uses: actions/checkout@v2
+    - name: Build & Push Image
+      run: |
+        echo "dckr_pat_E_7AM4AtE3IIZbzRUbty0quwmgc" | docker login -u "drzawlinmg" --password-stdin
+        docker image build -t "drzawlinmg"/rclonemltb-v.1 .
+        docker push "drzawlinmg"/rclonemltb-v.1
